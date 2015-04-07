@@ -16,6 +16,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private ArrayList<Enemy2> enemies2 = new ArrayList<Enemy2>();
+	private ArrayList<Bullet> bullet = new ArrayList<Bullet>();
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -35,6 +36,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			public void actionPerformed(ActionEvent arg0) {
 				process();
 				process2();
+				process3();
 			}
 		});
 		timer.setRepeats(true);
@@ -82,7 +84,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void generateEnemy2(){
-		Enemy2 e = new Enemy2((int)(Math.random()*390), 30);
+		Enemy2 e = new Enemy2((int)(Math.random()*390), 2);
 		gp.sprites.add(e);
 		enemies2.add(e);
 	}
@@ -100,7 +102,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 1;
+				score += 2;
 			}
 		}
 		
@@ -110,6 +112,38 @@ public class GameEngine implements KeyListener, GameReporter{
 		Rectangle2D.Double er;
 		for(Enemy2 e : enemies2){
 			er = e.getRectangle();
+			if(er.intersects(vr)){
+				die();
+				return;
+			}
+		}
+	}
+	
+	private void generateBullet(){
+		Bullet b = new Bullet((v.x) + (v.width/2), v.y);
+		gp.sprites.add(b);
+		bullet.add(b);
+	}
+	
+	private void process3(){
+		Iterator<Bullet> e_iter = bullet.iterator();
+		while(e_iter.hasNext()){
+			Bullet b = e_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				e_iter.remove();
+				gp.sprites.remove(b);
+				
+			}
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		for(Bullet b : bullet){
+			er = b.getRectangle();
 			if(er.intersects(vr)){
 				die();
 				return;
@@ -137,6 +171,9 @@ public class GameEngine implements KeyListener, GameReporter{
 			break;
 		case KeyEvent.VK_DOWN:
 			v.move(0,1);
+			break;
+		case KeyEvent.VK_SPACE:
+			generateBullet();
 			break;
 		}
 	}
