@@ -23,6 +23,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private long score = 0;
 	private double difficulty = 0.1;
+	private int num;
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
@@ -71,7 +72,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		
 		gp.updateGameUI(this);
-		
+		gp.bloodSpaceShip();
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy e : enemies){
@@ -107,13 +108,13 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		
 		gp.updateGameUI(this);
-		
+		gp.bloodSpaceShip();
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy2 e : enemies2){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
+				//die();
 				return;
 			}
 		}
@@ -139,19 +140,20 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		
 		gp.updateGameUI(this);
-		
+		gp.bloodSpaceShip();
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Bullet b : bullet){
 			er = b.getRectangle();
 			if(er.intersects(vr)){
-				die();
+				//die();
 				return;
 			}
 		}
 	}
 	
 	public void die(){
+		gp.end();
 		timer.stop();
 	}
 	
@@ -196,5 +198,9 @@ public class GameEngine implements KeyListener, GameReporter{
 	@Override
 	public void keyTyped(KeyEvent e) {
 		//do nothing		
+	}
+	
+	public int getNum(){
+		return num;
 	}
 }
