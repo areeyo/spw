@@ -22,8 +22,12 @@ public class GameEngine implements KeyListener, GameReporter{
 	private Timer timer;
 	
 	private long score = 0;
+	//private long hp = 5;
+	private int time = 0;
 	private double difficulty = 0.1;
 	private int num;
+	private int b=380;
+	private int e=0;
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
@@ -59,6 +63,9 @@ public class GameEngine implements KeyListener, GameReporter{
 			generateEnemy();
 		}
 		
+		if(time>0)
+			time--;
+		
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
@@ -72,16 +79,25 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		
 		gp.updateGameUI(this);
-		gp.bloodSpaceShip();
+		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
-				return;
+				if(time == 0){
+					//hp -= 1;
+					b -= 380/5;
+					time = 5;
+					if(b <= 75){
+						die();
+					}
+					return;
+				}
+				
 			}
 		}
+		gp.bloodSpaceShip(b);
 	}
 	
 	private void generateEnemy2(){
@@ -108,7 +124,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		
 		gp.updateGameUI(this);
-		gp.bloodSpaceShip();
+		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy2 e : enemies2){
@@ -118,6 +134,7 @@ public class GameEngine implements KeyListener, GameReporter{
 				return;
 			}
 		}
+		gp.bloodSpaceShip(b);
 	}
 	
 	private void generateBullet(){
@@ -140,7 +157,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		
 		gp.updateGameUI(this);
-		gp.bloodSpaceShip();
+		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Bullet b : bullet){
@@ -150,10 +167,12 @@ public class GameEngine implements KeyListener, GameReporter{
 				return;
 			}
 		}
+		gp.bloodSpaceShip(b);
 	}
 	
 	public void die(){
-		gp.end();
+		e=1;
+		gp.bloodSpaceShip(b);
 		timer.stop();
 	}
 	
@@ -179,6 +198,13 @@ public class GameEngine implements KeyListener, GameReporter{
 			break;
 		}
 	}
+	public long getEND(){
+		return e;
+	}
+	
+//	public long getHP(){
+//		return hp;
+//	}
 
 	public long getScore(){
 		return score;

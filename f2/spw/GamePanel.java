@@ -3,6 +3,8 @@ package f2.spw;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -24,20 +26,15 @@ public class GamePanel extends JPanel {
 	public void updateGameUI(GameReporter reporter){
 		big.clearRect(0, 0, 400, 600);
 		
+		
+		
 		big.setColor(Color.WHITE);		
 		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
-		for(Sprite s : sprites){
-			s.draw(big);
-		}
 		
-		repaint();
-	}
-
-	public void end(){
-		big.clearRect(0, 0, 400, 600);
 		
-		big.setColor(Color.GREEN);	
-		big.drawString(String.format("END"),300,20);
+		
+		
+			
 		for(Sprite s : sprites){
 			s.draw(big);
 		}
@@ -45,10 +42,10 @@ public class GamePanel extends JPanel {
 		repaint();
 	}
 	
-	public void bloodSpaceShip(){
+	public void bloodSpaceShip(int b){
 		
 		big.setColor(Color.RED);
-		big.fillRect( 2, 0, 380, 10 );
+		big.fillOval( 2, 0, b, 10 );
 		for(Sprite s : sprites){
 			s.draw(big);
 		}
