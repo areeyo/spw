@@ -26,7 +26,11 @@ public class GamePanel extends JPanel {
 	public void updateGameUI(GameReporter reporter){
 		big.clearRect(0, 0, 400, 600);
 		
-		
+		if( reporter.getEND()==1){
+			Image img = Toolkit.getDefaultToolkit().getImage("ufo.gif");
+			big.drawImage(img, -54, 50, 500, 500, null);
+			
+		}
 		
 		big.setColor(Color.WHITE);		
 		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
