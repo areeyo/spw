@@ -10,11 +10,11 @@ public class Enemy2 extends Sprite{
 	public static final int Y_TO_FADE = 400;
 	public static final int Y_TO_DIE = 600;
 	
-	private int step = 12;
+	private int step = 5;
 	private boolean alive = true;
 	
 	public Enemy2(int x, int y) {
-		super(x, y, 10, 5);
+		super(x, y, 20, 20);
 		
 	}
 
@@ -42,5 +42,9 @@ public class Enemy2 extends Sprite{
 	
 	public boolean isAlive(){
 		return alive;
+	}
+	
+	public void getHit(){
+		alive = false;
 	}
 }

@@ -41,4 +41,8 @@ public class Bullet extends Sprite{
 	public boolean isAlive(){
 		return alive;
 	}
+	
+	public void getHit(){
+		alive = false;
+	}
 }

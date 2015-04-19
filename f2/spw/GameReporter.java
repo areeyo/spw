@@ -4,4 +4,5 @@ public interface GameReporter {
 
 	long getScore();
 	long getEND();
+	
 }
