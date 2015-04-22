@@ -17,6 +17,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private ArrayList<Enemy2> enemies2 = new ArrayList<Enemy2>();
 	private ArrayList<Bullet> bullet = new ArrayList<Bullet>();
+	private ArrayList<Item> item = new ArrayList<Item>();
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -27,6 +28,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private double difficulty = 0.1;
 	private int b = 380;
 	private int e = 0;
+	private int hearth = 0;
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
@@ -41,6 +43,7 @@ public class GameEngine implements KeyListener, GameReporter{
 				process();
 				process2();
 				process3();
+				process4();
 			}
 		});
 		timer.setRepeats(true);
@@ -106,7 +109,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void process2(){
-		if(Math.random() < difficulty){
+		if(Math.random() < difficulty/10){
 			generateEnemy2();
 		}
 		
@@ -175,6 +178,51 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(er.intersects(vr)){
 				die();
 				return;
+			}
+		}
+		gp.bloodSpaceShip(b);
+	}
+	
+	private void generateItem(){
+		Item e = new Item((int)(Math.random()*390), 2);
+		gp.sprites.add(e);
+		item.add(e);
+	}
+	
+	private void process4(){
+		if(Math.random() < difficulty/20){
+			generateItem();
+		}
+		
+		if(hearth>0)
+			hearth--;
+		
+		Iterator<Item> e_iter = item.iterator();
+		while(e_iter.hasNext()){
+			Item e = e_iter.next();
+			e.proceed();
+			
+			if(!e.isAlive()){
+				e_iter.remove();
+				gp.sprites.remove(e);
+				
+			}
+			
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		for(Item e : item){
+			er = e.getRectangle();
+			if(er.intersects(vr)){
+				if(hearth == 0){
+					b = 380;
+					hearth = 10;
+					return;
+				}
+				
 			}
 		}
 		gp.bloodSpaceShip(b);
