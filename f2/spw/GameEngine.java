@@ -109,7 +109,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void process2(){
-		if(Math.random() < difficulty/10){
+		if(Math.random() < difficulty/20){
 			generateEnemy2();
 		}
 		
@@ -190,7 +190,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void process4(){
-		if(Math.random() < difficulty/20){
+		if(Math.random() < difficulty/10){
 			generateItem();
 		}
 		
@@ -253,6 +253,12 @@ public class GameEngine implements KeyListener, GameReporter{
 			break;
 		case KeyEvent.VK_SPACE:
 			generateBullet();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			timer.stop();
+			break;
+		case KeyEvent.VK_ENTER:
+			timer.start();
 			break;
 		}
 	}
