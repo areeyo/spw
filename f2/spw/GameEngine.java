@@ -1,5 +1,6 @@
 package f2.spw;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.Timer;
+
 
 
 public class GameEngine implements KeyListener, GameReporter{
@@ -30,6 +32,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private int e = 0;
 	private int hearth = 0;
 	
+	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
 		this.v = v;		
@@ -43,7 +46,7 @@ public class GameEngine implements KeyListener, GameReporter{
 				process();
 				process2();
 				process3();
-				process4();
+				process4();				
 			}
 		});
 		timer.setRepeats(true);
@@ -65,8 +68,11 @@ public class GameEngine implements KeyListener, GameReporter{
 			generateEnemy();
 		}
 		
-		if(time>0)
+		if(time>0){
+			
 			time--;
+		}
+		
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
@@ -89,6 +95,17 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(er.intersects(vr)){
 				if(time == 0){
 					//hp -= 1;
+					gp.big.setBackground(Color.RED);
+
+					Timer timer2 = new Timer(200, new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							gp.big.setBackground(Color.BLACK);
+						}
+					});
+					timer2.setRepeats(false);
+			        timer2.start();
 					b -= 380/5;
 					time = 5;
 					if(b <= 75){
@@ -149,6 +166,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		gp.bloodSpaceShip(b);
 	}
+	
+	
 	
 	private void generateBullet(){
 		Bullet b = new Bullet((v.x) + (v.width/2), v.y);
